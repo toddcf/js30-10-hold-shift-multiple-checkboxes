@@ -1,1 +1,1 @@
-# js30-10-hold-shift-multiple-checkboxes
+# JavaScript 30 #10: Hold Shift to Check Multiple Checkboxes
