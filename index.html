@@ -97,38 +97,40 @@
 
 <script>
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  
-  // Add event listener to all checkboxes:
-  checkboxes.forEach( checkbox => checkbox.addEventListener('click', selections));
 
-  // A variable to tore the most recent checked box:
-  let lastChecked;
-  
-  // Each time a checkbox is shift + clicked, loop through the array of checkboxes.
-  function selections(e) {
-    
-    // inBetween variable will changes to 'true' once first checked box is iterated over:
-    let inBetween = false;
+  const selector = {
+    // A variable to store the most recent checked box:
+    lastChecked: undefined,
+    selections: (e) => {
+      // inBetween variable will changes to 'true' once first checked box is iterated over:
+      let inBetween = false;
 
-    // Only if Shift key was held down and input was checked:
-    if (e.shiftKey && this.checked) {
-      // Loop over all checkboxes:
-      checkboxes.forEach( checkbox => {
-        // If, toggle inBetween to true or false:
-        if (checkbox === this || checkbox === lastChecked) {
-          inBetween = !inBetween;
-        }
-        // If inBetween is currently true, check the current box:
-        if (inBetween) {
-          checkbox.checked = true;
-        }
-      });
+      // Only if Shift key was held down and input was checked:
+      if (e.shiftKey && e.currentTarget.checked) {
+        // Loop over all checkboxes:
+        checkboxes.forEach( checkbox => {
+          // If, toggle inBetween to true or false:
+          if (checkbox === e.currentTarget || checkbox === selector.lastChecked) {
+            inBetween = !inBetween;
+          }
+          // If inBetween is currently true, check the current box:
+          if (inBetween) {
+            checkbox.checked = true;
+          }
+        });
+      }
+
+      // Set the "lastChecked" box to the one that was just clicked:
+      selector.lastChecked = e.currentTarget;
+    },
+    init: () => {
+      // Add event listener to all checkboxes:
+      checkboxes.forEach( checkbox => checkbox.addEventListener('click', selector.selections));
     }
-
-    // Set the "lastChecked" box to the one that was just clicked:
-    lastChecked = this;
-    
   }
+
+  selector.init();
+  
 </script>
 </body>
 </html>
